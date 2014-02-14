@@ -1,0 +1,67 @@
+<?php $_id = 'id_' . md5(microtime()) ?>
+<?php $formId = $this->getFormId()?>
+<?php if (!empty($formId)) :?>
+<script type="text/javascript">
+//<![CDATA[
+    serializerController.prototype.rowClick = function(grid, event) {
+        this.getOldCallback('row_click')(grid, event);
+    };
+
+    serializerController.prototype.registerData = serializerController.prototype.registerData.wrap(
+        function(original, grid, element, checked) {
+            var form = $('<?php echo $formId ?>');
+            var linkedInput;
+
+            // Call the original function
+            original(grid, element, checked);
+
+            // Synchronize the input
+            linkedInput = Element.select(form,'input[name='+this.hiddenDataHolder.name+']')[0];
+
+            if ( ! linkedInput ) {
+                var linkedInput = new Element('input',{
+                    id    : this.hiddenDataHolder.id + '-massaction',
+                    type  : 'hidden',
+                    name  : this.hiddenDataHolder.name,
+                    value : this.hiddenDataHolder.value
+                });
+                Element.insert(form,linkedInput);
+            } else {
+                linkedInput.value = this.hiddenDataHolder.value;
+            }
+        }
+    );
+
+    serializerController.prototype.inputChange = serializerController.prototype.inputChange.wrap(
+        function(original, event) {
+            var form = $('<?php echo $formId ?>');
+            var linkedInput;
+
+            // Call the original function
+            original(event);
+
+            // Synchronize the input
+            linkedInput = Element.select(form,'input[name='+this.hiddenDataHolder.name+']')[0];
+
+            if ( ! linkedInput ) {
+                var linkedInput = new Element('input',{
+                    id    : this.hiddenDataHolder.id + '-massaction',
+                    type  : 'hidden',
+                    name  : this.hiddenDataHolder.name,
+                    value : this.hiddenDataHolder.value
+                });
+                Element.insert(form,linkedInput);
+            } else {
+                linkedInput.value = this.hiddenDataHolder.value;
+            }
+        }
+    );
+//]]>
+</script>
+<?php endif; ?>
+<input type="hidden" name="<?php echo $this->getInputElementName()?>"  value="" id="<?php echo $_id?>" />
+<script type="text/javascript">
+//<![CDATA[
+    new serializerController('<?php echo $_id?>', <?php echo $this->getDataAsJSON() ?>, <?php echo $this->getColumnInputNames(true) ?>, <?php echo $this->getGridBlock()->getJsObjectName() ?>, '<?php echo $this->getReloadParamName()?>');
+//]]>
+</script>

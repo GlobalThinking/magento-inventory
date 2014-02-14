@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!DOCTYPE config>
+<!--
+/**
+ * Global Thinking
+ *
+ * @category    Magento
+ * @package     GlobalThinking_Inventory
+ * @copyright   Copyright (c) 2011 Global Thinking, Inc. (http://www.globalthinking.com)
+ */
+
+/**
+ * Configuration file
+ *
+ * @category   Magento
+ * @package    GlobalThinking_Inventory
+ * @author     Franklin Strube <fstrube@globalthinking.com>
+ */
+-->
+<config>
+    <!-- module declaration -->
+    <modules>
+        <GlobalThinking_Inventory>
+            <version>0.0.4</version>
+        </GlobalThinking_Inventory>
+    </modules>
+    <global>
+        <!-- model alias and class name -->
+        <models>
+            <globalthinking_inventory>
+                <class>GlobalThinking_Inventory_Model</class>
+                <resourceModel>globalthinking_inventory_mysql4</resourceModel>
+            </globalthinking_inventory>
+            <globalthinking_inventory_mysql4>
+                <class>GlobalThinking_Inventory_Model_Mysql4</class>
+                <entities>
+                    <stock_transaction>
+                        <table>globalthinking_inventory_stock_transaction</table>
+                    </stock_transaction>
+                    <stock_receipt>
+                        <table>globalthinking_inventory_stock_receipt</table>
+                    </stock_receipt>
+                </entities>
+            </globalthinking_inventory_mysql4>
+            <cataloginventory>
+                <rewrite>
+                    <stock_item>GlobalThinking_Inventory_Model_Stock_Item</stock_item>
+                    <stock>GlobalThinking_Inventory_Model_Stock</stock>
+                </rewrite>
+            </cataloginventory>
+        </models>
+        <resources>
+            <!-- setup resource -->
+            <globalthinking_inventory_setup>
+                <setup>
+                    <module>GlobalThinking_Inventory</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </globalthinking_inventory_setup>
+            <!-- write resource -->
+            <globalthinking_inventory_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </globalthinking_inventory_write>
+            <!-- read resource -->
+            <globalthinking_inventory_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </globalthinking_inventory_read>
+        </resources>
+        <!-- helper class path -->
+        <helpers>
+            <globalthinking_inventory>
+                <class>GlobalThinking_Inventory_Helper</class>
+            </globalthinking_inventory>
+        </helpers>
+        <!-- block class path -->
+        <blocks>
+            <globalthinking_inventory>
+                <class>GlobalThinking_Inventory_Block</class>
+            </globalthinking_inventory>
+        </blocks>
+        <!-- event listeners -->
+        <events>
+            <cataloginventory_stock_item_save_before>
+                <observers>
+                    <stock_transaction>
+                        <type>singleton</type>
+                        <class>globalthinking_inventory/observer</class>
+                        <method>stockItemSaveBefore</method>
+                    </stock_transaction>
+                </observers>
+            </cataloginventory_stock_item_save_before>
+            <cataloginventory_stock_item_save_after>
+                <observers>
+                    <stock_transaction>
+                        <type>singleton</type>
+                        <class>globalthinking_inventory/observer</class>
+                        <method>stockItemSaveAfter</method>
+                    </stock_transaction>
+                </observers>
+            </cataloginventory_stock_item_save_after>
+        </events>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <GlobalThinking_Inventory before="Mage_Adminhtml">GlobalThinking_Inventory_Adminhtml</GlobalThinking_Inventory>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <globalthinking_inventory module="GlobalThinking_Inventory">
+                    <file>globalthinking_inventory.xml</file>
+                </globalthinking_inventory>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>

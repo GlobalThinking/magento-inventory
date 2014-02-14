@@ -1,0 +1,4 @@
+app/code/community/GlobalThinking/Inventory                                 app/code/community/GlobalThinking/Inventory
+app/design/adminhtml/default/default/layout/globalthinking_inventory.xml    app/design/adminhtml/default/default/layout/globalthinking_inventory.xml
+app/design/adminhtml/default/default/template/globalthinking/inventory      app/design/adminhtml/default/default/template/globalthinking/inventory
+app/etc/modules/GlobalThinking_Inventory.xml                                app/etc/modules/GlobalThinking_Inventory.xml

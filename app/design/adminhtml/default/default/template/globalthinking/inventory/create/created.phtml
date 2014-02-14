@@ -1,0 +1,22 @@
+<?php
+/**
+* popup to display if the edit was successful
+* @author Nithin <nithin@globalthinking.com>
+ */
+?>
+<script type="text/javascript">
+//<![CDATA[
+    function closeWindow()
+    {
+        if (window.opener) {
+            window.opener.focus();
+        }
+        window.close();
+    }
+
+    setTimeout(closeWindow, 3000);
+//]]>
+</script>
+<div class="a-center">
+    <?php echo $this->getCloseButtonHtml() ?>
+</div>

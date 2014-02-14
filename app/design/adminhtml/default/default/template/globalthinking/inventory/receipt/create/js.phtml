@@ -1,0 +1,134 @@
+<script type="text/javascript">
+//<![CDATA[
+    var productTemplateSyntax = /(^|.|\r|\n)({{(\w+)}})/;
+    function saveAndContinueEdit(urlTemplate){
+        var template = new Template(urlTemplate, productTemplateSyntax);
+        var url = template.evaluate({tab_id:inventory_receipt_tabsJsTabs.activeTab.id});
+        disableElements('save');
+        if (editForm.submit(url) == false) {
+            enableElements('save');
+        }
+        varienGlobalEvents.attachEventHandler('formValidateAjaxComplete', function (){
+            enableElements('save');
+        });
+    }
+
+    var locationModel = Class.create();
+    locationModel.prototype = {
+        initialize : function()
+        {
+            this.reload = false;
+            this.loader = new varienLoader(true);
+            this.regionsUrl = "<?php echo $this->getUrl('*/json/countryRegion') ?>";
+
+            this.bindCountryRegionRelation();
+        },
+        bindCountryRegionRelation : function(parentId)
+        {
+            if(parentId) {
+                // todo: fix bug in IE
+                var countryElements = $$('#'+parentId+' .countries');
+            } else {
+                var countryElements = $$('.countries');
+            }
+            for(var i=0; i<countryElements.size(); i++) {
+                Event.observe(countryElements[i], 'change', this.reloadRegionField.bind(this));
+                this.initRegionField(countryElements[i]);
+                if ($(countryElements[i].id+'_inherit')) {
+                    Event.observe($(countryElements[i].id+'_inherit'), 'change', this.enableRegionZip.bind(this));
+                }
+            }
+        },
+        enableRegionZip : function(event)
+        {
+            this.reload = true;
+            var countryElement = Event.element(event);
+            if (countryElement && countryElement.id && !countryElement.checked) {
+                var regionElement  = $(countryElement.id.replace(/country_id/, 'region_id'));
+                var zipElement  = $(countryElement.id.replace(/country_id/, 'postcode'));
+                if (regionElement && regionElement.checked) {
+                    regionElement.click();
+                }
+                if (zipElement && zipElement.checked) {
+                    zipElement.click();
+                }
+            }
+        },
+        initRegionField : function(element)
+        {
+            var countryElement = element;
+            if (countryElement && countryElement.id) {
+                var regionElement  = $(countryElement.id.replace(/country_id/, 'region_id'));
+                if (regionElement) {
+                    this.regionElement = regionElement;
+                    var url = this.regionsUrl+'parent/'+countryElement.value;
+                    this.loader.load(url, {}, this.refreshRegionField.bind(this));
+                }
+            }
+        },
+        reloadRegionField : function(event)
+        {
+            this.reload = true;
+            var countryElement = Event.element(event);
+            if (countryElement && countryElement.id) {
+                var regionElement  = $(countryElement.id.replace(/country_id/, 'region_id'));
+                if (regionElement) {
+                    this.regionElement = regionElement;
+                    var url = this.regionsUrl+'parent/'+countryElement.value;
+                    this.loader.load(url, {}, this.refreshRegionField.bind(this));
+                }
+            }
+        },
+        refreshRegionField : function(serverResponse)
+        {
+            if (serverResponse) {
+                var data = eval('(' + serverResponse + ')');
+                var value = this.regionElement.value;
+                var disabled = this.regionElement.disabled;
+                var required = this.regionElement.hasClassName('required-entry');
+                if (data.length) {
+                    var html = '<select name="'+this.regionElement.name+'" id="'+this.regionElement.id+'" class="'+(required?"required-entry ":"")+'select" title="'+this.regionElement.title+'"'+(disabled?" disabled":"")+'>';
+                    for (var i in data) {
+                        if(data[i].label) {
+                            html+= '<option value="'+data[i].value+'"';
+                            if(this.regionElement.value && (this.regionElement.value == data[i].value || this.regionElement.value == data[i].label)) {
+                                html+= ' selected';
+                            }
+                            html+='>'+data[i].label+'<\/option>';
+                        }
+                    }
+                    html+= '<\/select>';
+
+                    var parentNode = this.regionElement.parentNode;
+                    var regionElementId = this.regionElement.id;
+                    parentNode.innerHTML = html;
+                    this.regionElement = $(regionElementId);
+                } else if (this.reload) {
+                    var html = '<input type="text" name="'+this.regionElement.name+'" id="'+this.regionElement.id+'" class="input-text" title="'+this.regionElement.title+'"'+(disabled?" disabled":"")+'>';
+                    var parentNode = this.regionElement.parentNode;
+                    var regionElementId = this.regionElement.id;
+                    parentNode.innerHTML = html;
+                    this.regionElement = $(regionElementId);
+                    //this.regionElement.replace(html);
+                }
+            }
+        }
+    };
+
+    locationAddress = new locationModel();
+
+    Event.observe(window, 'load', showLookupOrderButton) // to display lookup button after an error message and for edit reciept
+    $('reference_type').observe('change', showLookupOrderButton);
+
+    function showLookupOrderButton(){
+        var typeElement = document.getElementById('reference_type');
+
+        if(typeElement.value == 'returned_item'){
+            document.getElementById('lookupOrderButton').style.display = 'inline';
+        }else{
+            document.getElementById('lookupOrderButton').style.display = 'none';
+        }
+    };
+
+//]]>
+</script>

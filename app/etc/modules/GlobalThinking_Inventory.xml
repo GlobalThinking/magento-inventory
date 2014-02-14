@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE config>
+<!--
+/**
+ * Global Thinking
+ *
+ * @category    Magento
+ * @package     GlobalThinking_Inventory
+ * @copyright   Copyright (c) 2011 Global Thinking, Inc. (http://www.globalthinking.com)
+ */
+
+/**
+ * Configuration file
+ *
+ * @category   Magento
+ * @package    GlobalThinking_Inventory
+ * @author     Franklin Strube <fstrube@globalthinking.com>
+ */
+-->
+<config>
+    <modules>
+        <GlobalThinking_Inventory>
+            <active>true</active>
+            <codePool>community</codePool>
+        </GlobalThinking_Inventory>
+    </modules>
+</config>

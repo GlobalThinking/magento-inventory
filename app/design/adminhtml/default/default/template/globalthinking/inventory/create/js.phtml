@@ -1,0 +1,16 @@
+<script type="text/javascript">
+//<![CDATA[
+    var productTemplateSyntax = /(^|.|\r|\n)({{(\w+)}})/;
+    function saveAndContinueEdit(urlTemplate){
+        var template = new Template(urlTemplate, productTemplateSyntax);
+        var url = template.evaluate({tab_id:inventory_tabsJsTabs.activeTab.id});
+        disableElements('save');
+        if (editForm.submit(url) == false) {
+            enableElements('save');
+        }
+        varienGlobalEvents.attachEventHandler('formValidateAjaxComplete', function (){
+            enableElements('save');
+        });
+    }
+//]]>
+</script>

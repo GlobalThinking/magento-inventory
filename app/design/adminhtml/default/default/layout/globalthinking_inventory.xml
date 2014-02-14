@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE layout>
+<!--
+/**
+ * Global Thinking
+ *
+ * @category    Magento
+ * @package     GlobalThinking_Inventory
+ * @copyright   Copyright (c) 2011 Global Thinking, Inc. (http://www.globalthinking.com)
+ */
+
+/**
+ * Layout file
+ *
+ * @category   Magento
+ * @package    GlobalThinking_Inventory
+ * @author     Franklin Strube <fstrube@globalthinking.com>
+ */
+-->
+<layout version="0.1.0">
+    <!-- Lists Qty on Sale, Qty to Ship, Qty on Hand for each product -->
+    <adminhtml_inventory_index>
+        <reference name="content">
+            <block type="globalthinking_inventory/adminhtml_inventory" name="inventory">
+                <block type="adminhtml/widget_grid_serializer" name="inventory.serializer" as="serializer" template="globalthinking/inventory/widget/grid/serializer.phtml">
+                    <action method="addColumnInputName"><name>qty_on_hand</name></action>
+                    <action method="initSerializerBlock">
+                        <grid>adminhtml_inventory.grid</grid>
+                        <callback>getSelectedQtyOnHand</callback>
+                        <input>inventory</input>
+                        <param>inventory</param>
+                    </action>
+                </block>
+            </block>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/template" template="globalthinking/inventory/js.phtml" name="inventory.js" />
+        </reference>
+    </adminhtml_inventory_index>
+
+    <!-- Tabbed page, will list inventory information and all transactions for a single product -->
+    <adminhtml_inventory_edit>
+        <reference name="content">
+            <block type="globalthinking_inventory/adminhtml_inventory_edit" name="inventory.edit" />
+        </reference>
+        <reference name="left">
+            <block type="globalthinking_inventory/adminhtml_inventory_edit_tabs" name="inventory.edit_tabs">
+                <!-- Tabs are added in the block -->
+            </block>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/template" template="globalthinking/inventory/create/js.phtml" name="inventory.edit_js"></block>
+        </reference>
+    </adminhtml_inventory_edit>
+
+    <!-- Lists all transactions for all products -->
+    <adminhtml_inventory_transaction_index>
+        <reference name="content">
+            <block type="globalthinking_inventory/adminhtml_inventory_transaction" name="inventory_transaction" />
+        </reference>
+    </adminhtml_inventory_transaction_index>
+
+    <!-- Edit an existing or create a new inventory receipt -->
+    <adminhtml_inventory_receipt_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+        </reference>
+        <reference name="content">
+            <block type="globalthinking_inventory/adminhtml_inventory_receipt_create" name="inventory_receipt.create" />
+        </reference>
+        <reference name="left">
+            <block type="globalthinking_inventory/adminhtml_inventory_receipt_create_tabs" name="inventory_receipt.create_tabs">
+                <!-- Tabs are added in the block -->
+            </block>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/template" template="globalthinking/inventory/receipt/create/js.phtml" name="inventory_receipt.create_js"></block>
+        </reference>
+    </adminhtml_inventory_receipt_edit>
+
+    <adminhtml_inventory_receipt_selectorder>
+        <reference name="content">
+            <block type="globalthinking_inventory/adminhtml_inventory_receipt_grid" name="inventory_receipt.grid" />
+        </reference>
+    </adminhtml_inventory_receipt_selectorder>
+</layout>

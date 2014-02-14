@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!DOCTYPE config>
+<!--
+/**
+ * Global Thinking
+ *
+ * @category    Magento
+ * @package     GlobalThinking_Inventory
+ * @copyright   Copyright (c) 2011 Global Thinking, Inc. (http://www.globalthinking.com)
+ */
+
+/**
+ * Configuration file
+ *
+ * @category   Magento
+ * @package    GlobalThinking_Inventory
+ * @author     Franklin Strube <fstrube@globalthinking.com>
+ */
+-->
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <globalthinking_inventory translate="title" module="globalthinking_inventory">
+                    <title>Inventory</title>
+                    <sort_order>55</sort_order>
+                    <depends><module>GlobalThinking_Inventory</module></depends>
+                    <children>
+                        <items translate="title" module="globalthinking_inventory">
+                            <title>Items</title>
+                            <action>adminhtml/inventory</action>
+                        </items>
+                        <transactions translate="title" module="globalthinking_inventory">
+                            <title>Transactions</title>
+                            <action>adminhtml/inventory_transaction</action>
+                        </transactions>
+                    </children>
+                </globalthinking_inventory>
+            </children>
+        </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <globalthinking_inventory translate="title" module="globalthinking_inventory">
+                                <title>Inventory</title>
+                                <sort_order>55</sort_order>
+                                <children>
+                                    <items translate="title" module="globalthinking_inventory">
+                                        <title>Items</title>
+                                        <sort_order>10</sort_order>
+                                        <children>
+                                            <actions translate="title" module="globalthinking_inventory">
+                                                <title>Actions</title>
+                                                <children>
+                                                    <view translate="title" module="globalthinking_inventory">
+                                                        <title>View</title>
+                                                        <sort_order>10</sort_order>
+                                                    </view>
+                                                    <update translate="title" module="globalthinking_inventory">
+                                                        <title>Update</title>
+                                                        <sort_order>20</sort_order>
+                                                    </update>
+                                                </children>
+                                            </actions>
+                                        </children>
+                                    </items>
+                                    <transactions translate="title" module="globalthinking_inventory">
+                                        <title>Transactions</title>
+                                        <sort_order>20</sort_order>
+                                        <children>
+                                            <actions translate="title" module="globalthinking_inventory">
+                                                <title>Actions</title>
+                                                <children>
+                                                    <view translate="title" module="globalthinking_inventory"><title>View</title></view>
+                                                </children>
+                                            </actions>
+                                        </children>
+                                    </transactions>
+                                    <receipts translate="title" module="globalthinking_inventory">
+                                        <title>Receipts</title>
+                                        <sort_order>30</sort_order>
+                                        <children>
+                                            <actions translate="title" module="globalthinking_inventory">
+                                                <title>Actions</title>
+                                                <children>
+                                                    <view translate="title" module="globalthinking_inventory">
+                                                        <title>View</title>
+                                                        <sort_order>10</sort_order>
+                                                    </view>
+                                                    <create translate="title" module="globalthinking_inventory">
+                                                        <title>Create</title>
+                                                        <sort_order>20</sort_order>
+                                                    </create>
+                                                    <update translate="title" module="globalthinking_inventory">
+                                                        <title>Update</title>
+                                                        <sort_order>30</sort_order>
+                                                    </update>
+                                                </children>
+                                            </actions>
+                                        </children>
+                                    </receipts>
+                                </children>
+                            </globalthinking_inventory>
+                        </children>
+                    </catalog>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>
